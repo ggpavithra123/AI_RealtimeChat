@@ -61,9 +61,8 @@ app.get(
 
 app.use(errorHandler);
 const PORT = process.env.PORT || 9000;
-server.listen(Env.PORT, async () => {
+
+server.listen(PORT, "0.0.0.0", async () => {
   await connectDatabase();
-  console.log(`Server running on port ${Env.PORT} in ${Env.NODE_ENV} mode`);
-  initializeSocket(server);
-  //initSocketServer();
-});
+  console.log(`Server running on port ${PORT}`);
+});;
