@@ -9,7 +9,7 @@ import { HTTPSTATUS } from "./config/http.config";
 import connectDatabase from "./config/database.config";
 import { initSocketServer } from "./socket/socket"; // ✅ import socket server
 const app = express();
-//const server = http.createServer(app);
+const server = http.createServer(app);
 
 //socket
 //initializeSocket(server);
