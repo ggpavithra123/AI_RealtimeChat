@@ -1,53 +1,53 @@
 import "dotenv/config";
 import http from "http";
-import express, { Request, Response, Router } from "express";
+import express, { Request, Response } from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import { Env } from "./config/env.config";
+import passport from "passport";
+
 import { asyncHandler } from "./middleware/asyncHandler.middleware";
 import { errorHandler } from "./middleware/errorHandler.middleware";
 import { HTTPSTATUS } from "./config/http.config";
-import "./config/passport.config";
 import connectDatabase from "./config/database.config";
-import passport from "passport";
 import router from "./routes";
-import { initializeSocket } from "./lib/socket";
+import "./config/passport.config";
+
 const app = express();
-import { Server } from "socket.io";
 const server = http.createServer(app);
-import { initSocketServer } from "./socket/socket"; // ✅ import socket server
 
-//socket
-initializeSocket(server);
+// ============================
+// CORS CONFIG (FIXED)
+// ============================
 
-app.use(express.json({ limit: "100mb" }));
-app.use(cookieParser());
-app.use(express.urlencoded({ extended: true }));
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://ai-realtime-chat-3ccw.vercel.app",
+];
+
 app.use(
   cors({
-    origin: Env.FRONTEND_ORIGIN,
+    origin: allowedOrigins,
     credentials: true,
   })
 );
 
-// ✅ Same for Socket.IO
-const io = new Server(server, {
-  cors: {
-    origin: "https://ai-realtime-chat-3ccw.vercel.app",
-    methods: ["GET", "POST"],
-    credentials: true,
-  },
-});
-io.on("connection", (socket) => {
-  console.log("✅ User connected:", socket.id);
+// Handle preflight requests
+app.options("*", cors());
 
-  socket.on("disconnect", () => {
-    console.log("❌ User disconnected:", socket.id);
-  });
-});
+// ============================
+// MIDDLEWARES
+// ============================
+
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 app.use(passport.initialize());
 
-app.use("/api",router); 
+// ============================
+// ROUTES
+// ============================
+
+app.use("/api", router);
 
 app.get(
   "/health",
@@ -59,10 +59,23 @@ app.get(
   })
 );
 
+// ============================
+// ERROR HANDLER
+// ============================
+
 app.use(errorHandler);
-const PORT = Number(process.env.PORT)|| 9000;
+
+// ============================
+// SERVER START
+// ============================
+
+const PORT = Number(process.env.PORT) || 9000;
 
 server.listen(PORT, "0.0.0.0", async () => {
-  await connectDatabase();
-  console.log(`Server running on port ${PORT}`);
-});;
+  try {
+    await connectDatabase();
+    console.log(`🚀 Server running on port ${PORT}`);
+  } catch (error) {
+    console.error("❌ Database connection failed:", error);
+  }
+});
