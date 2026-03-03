@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "socket": "^1.1.25",
+    "socket.io": "^4.8.1"
+  },
+  "name": "websocket-example",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  }
+}
