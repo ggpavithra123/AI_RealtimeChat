@@ -33,7 +33,7 @@ app.use(
 // ✅ Same for Socket.IO
 const io = new Server(server, {
   cors: {
-    origin: "https://ai-realtime-chat-3ccw.vercel.app/",
+    origin: "https://ai-realtime-chat-3ccw.vercel.app",
     methods: ["GET", "POST"],
     credentials: true,
   },
