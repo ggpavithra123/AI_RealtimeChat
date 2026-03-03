@@ -8,7 +8,7 @@ export const initSocketServer = () => {
 
   app.use(
     cors({
-      origin: "http://localhost:5174",
+      origin: "https://ai-realtime-chat-3ccw.vercel.app/",
       credentials: true,
     })
   );
@@ -17,7 +17,7 @@ export const initSocketServer = () => {
 
   const io = new Server(server, {
     cors: {
-      origin: "http://localhost:5174",
+      origin: "https://ai-realtime-chat-3ccw.vercel.app/",
       methods: ["GET", "POST"],
       credentials: true,
     },
