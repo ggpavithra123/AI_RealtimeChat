@@ -7,7 +7,8 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "dev": "nodemon src/index.ts",
-    "seed:ai": "ts-node src/script/seedWhopAI.ts"
+    "seed:ai": "ts-node src/script/seedWhopAI.ts",
+    "seed:ai:prod": "node dist/script/seedWhopAI.js"
   }, 
   "keywords": [],
   "author": "",
