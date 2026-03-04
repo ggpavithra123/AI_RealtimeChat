@@ -11,8 +11,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "type": "module",
+  "license": "ISC",  
   "dependencies": {
     "@ai-sdk/google": "^2.0.25",
     "ai": "^5.0.83",
